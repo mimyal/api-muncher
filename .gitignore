@@ -15,5 +15,8 @@
 /log/*
 !/log/.keep
 /tmp
+.DS_Store
 
+# SECRETS
 .env
+/test/cassettes/
