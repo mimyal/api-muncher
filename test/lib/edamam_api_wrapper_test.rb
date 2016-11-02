@@ -1,26 +1,16 @@
 class EdamamApiWrapperTest < ActiveSupport::TestCase
 
-#slack listchannels
-  test "list_recipes returns array of recipes" do
+#slack equivalent listchannels
+# this test passes when search_string is inserted into list_recipes
+  test "list_recipes returns array of recipes when it has a search string" do
     VCR.use_cassette("recipes") do
       recipes = EdamamApiWrapper.list_recipes
-      puts recipes.first
       assert_kind_of Array, recipes
       recipes.each do |recipe|
         assert_kind_of Recipe, recipe
       end
     end
   end
-
-  # test "listchannels returns array of channels" do
-  #   VCR.use_cassette("channels") do
-  #     channels = SlackApiWrapper.listchannels
-  #     assert_kind_of Array, channels
-  #     channels.each do |channel|
-  #       assert_kind_of Channel, channel
-  #     end
-  #   end
-  # end
 
 
 # slackapi sendmsg
