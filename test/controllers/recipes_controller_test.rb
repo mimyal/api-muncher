@@ -7,13 +7,5 @@ class RecipesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-# @todo once the API is set up
-  test "the index must have access to recipes (instance variable)" do
-
-
-    get :index
-
-
-  end
 
 end

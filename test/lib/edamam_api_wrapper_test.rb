@@ -1,10 +1,12 @@
 class EdamamApiWrapperTest < ActiveSupport::TestCase
 
 #slack equivalent listchannels
-# this test passes when search_string is inserted into list_recipes
+# this is for the greyed out version of list_recipes
+# this test passes when search_query is inserted into list_recipes
   test "list_recipes returns array of recipes when it has a search string" do
     VCR.use_cassette("recipes") do
-      recipes = EdamamApiWrapper.list_recipes
+      clean_string = "cilantro"
+      recipes = EdamamApiWrapper.list_recipes(clean_string)
       assert_kind_of Array, recipes
       recipes.each do |recipe|
         assert_kind_of Recipe, recipe
@@ -12,31 +14,27 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
     end
   end
 
+  # slackapi sendmsg equivalent
+  # query_sanitation should return the recipes matching the first word in the string typed in
+  test "Can send a search query and get a valid response" do
+    VCR.use_cassette("hits") do
+      search_string = "cilantro"
+      response = EdamamApiWrapper.query_sanitation(search_string)
+      assert_equal(response, "cilantro") # because cilantro is the sanitized version of itself
+    end
+  end
 
-# slackapi sendmsg
-  # test "Can send a search query and get a valid response" do
-  #   VCR.use_cassette("recipes") do
-  #     search = "cilantro"
-  #     response = EdamamApiWrapper.
+# PUT THIS IN LATER
+  # test "Will only return the search query using the first word letters from the search_query" do
+  #   VCR.use_cassette("hits") do
+  #     search_string = "cilantro, edamame and caramel"
+  #     response = EdamamApiWrapper.search_query(search_string)
+  #     assert_equal response["q"], "cilantro"
   #   end
-  #
   # end
-    # test "Can send valid message to real channel" do
-    #   VCR.use_cassette("channels") do
-    #     message = "This is a test. One. Two. Three. End of testing."
-    #     response = SlackApiWrapper.sendmsg("test-api-brackets", message)
-    #     assert response["ok"]
-    #     assert_equal response["message"]["text"], message
-    #   end
-    # end
-    #
-    # test "Can't send message to fake channel" do
-    #   VCR.use_cassette("channels") do
-    #     response = SlackApiWrapper.sendmsg("this-channel-does-not-exist", "test message")
-    #     assert_not response["ok"]
-    #     assert_not_nil response["error"]
-    #   end
-    # end
-    #
 
+  # test "Will not send a query for searches not starting on a letter character" do
+  #   assert false
+      # assert_nil true # ?
+  # end
 end
