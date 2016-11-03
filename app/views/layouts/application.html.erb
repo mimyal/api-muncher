@@ -7,8 +7,16 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<header>
+
+</header>
 
 <%= yield %>
-
+<footer>
+  <section>
+    <%= link_to "Search", root_path %>
+    <%= image_tag("attibution_edamam.png",  alt: "Powered by Edamam") -%>
+  </section>
+</footer>
 </body>
 </html>

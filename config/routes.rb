@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
+  root 'home#index'
 
-  get '/' => 'recipes#index'
+  get '/recipes' => 'recipes#index'
+  get '/recipes/:id' => 'recipes#show', as: 'recipe'
 
   get '/search' => 'recipes#search'
 
