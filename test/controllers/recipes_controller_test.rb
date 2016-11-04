@@ -24,7 +24,13 @@ class RecipesControllerTest < ActionController::TestCase
       get :search, params
       assert_redirected_to root_path
     end
+  end
 
+  test "should get show" do
+    VCR.use_cassette("recipes") do
+      get :show, id: 0
+      assert_response :success
+    end
   end
 
 end

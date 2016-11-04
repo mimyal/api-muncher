@@ -7,11 +7,12 @@ class EdamamApiWrapper
 
   attr_reader :data
 
-  def self.list_recipes(clean_string, page=0)
+  def self.list_recipes(clean_string, listing=0)
+
     #gives us the first ten
     page_string = "&from=0"
-    if page !=0
-      page_string = "&from=#{page}"
+    if listing !=0
+      page_string = "&from=#{listing}"
     end
     url = BASE_URL + "?q=#{clean_string}" + page_string + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
     # url = BASE_URL + "?q=chicken" + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
@@ -20,11 +21,14 @@ class EdamamApiWrapper
     search_results = []
     if @data["hits"]
       @data["hits"].each do |hit|
-        wrapper = Recipe.new(hit["recipe"]["label"], hit["recipe"]["image"], hit["recipe"]["uri"], hit["recipe"]["url"])
+        wrapper = Recipe.new(listing, hit["recipe"]["label"], hit["recipe"]["image"], hit["recipe"]["uri"], hit["recipe"]["url"], hit["recipe"]["ingredientLines"], hit["recipe"]["dietLabels"])
+        listing += 1
         # label is recipe title
         # image is image of recipe item
         # uri is uri for recipe on edamam
         # url is url for original recipe
+        # "ingredientLines" is the array of ingredients
+        # "dietLabels" is the array of dietary information
         search_results << wrapper
       end
     end
@@ -38,6 +42,13 @@ class EdamamApiWrapper
     clean_string = search_string
     # Used by the recipe controller action
     return clean_string
+  end
+
+  def self.get_recipe(recipe_uri)
+    url = BASE_URL + "?r=#{URI.encode(recipe_uri)}" + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
+    @data = HTTParty.get(url)
+    # check/test for valid return
+    return Recipe.new(0, @data[0]['label'], @data[0]['image'], @data[0]['uri'], @data[0]['url'], @data[0]['ingredientLines'], @data[0]['dietLabels']  )
   end
 
 end

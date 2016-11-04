@@ -24,7 +24,18 @@ class RecipeTest < ActiveSupport::TestCase
     assert_nil(Recipe.search_results(nil_that_should_be_a_string))
   end
 
+#show
+  # test "find should be able to find the instance recipe with specified id" do
+  #   # params_id = 0
+  #   # assert_instance_of Recipe, Recipe.find(params_id)
+  # end
 
+  test "two different recipe objects with the same data should be equal" do
+    recipe_a = Recipe.new(0, "Chocolate Ham", "ham.jpg", "http_string", "https_string", ["jam", "cheese"], ["Saturday night", "not for kids"])
+    recipe_b = Recipe.new(0, "Chocolate Ham", "ham.jpg", "http_string", "https_string", ["jam", "cheese"], ["Saturday night", "not for kids"])
+
+    assert_equal(recipe_a, recipe_b)
+  end
 # #search_results returns the information needed for this application only, we can't test this because I am not asking for query information in my API request
 #   test "search_results should return the results for the first word in a query" do
 #     VCR.use_cassette("hits") do
@@ -35,4 +46,5 @@ class RecipeTest < ActiveSupport::TestCase
 #       # assert_equal(response["q"], "cilantro")
 #     end
 #   end
+
 end

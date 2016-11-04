@@ -14,27 +14,37 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
     end
   end
 
-  # slackapi sendmsg equivalent
-  # query_sanitation should return the recipes matching the first word in the string typed in
-  test "Can send a search query and get a valid response" do
-    VCR.use_cassette("hits") do
-      search_string = "cilantro"
-      response = EdamamApiWrapper.query_sanitation(search_string)
-      assert_equal(response, "cilantro") # because cilantro is the sanitized version of itself
+  test "get_recipe should successfully return correct recipe" do
+    VCR.use_cassette("recipes") do
+      uri = 'http://www.edamam.com/ontologies/edamam.owl#recipe_c468dc28f8b64bb711125cc150b15c25'
+      actual_recipe = EdamamApiWrapper.get_recipe(uri)
+
+      expected_recipe = Recipe.new(0, 'Grilled Deviled Chickens Under a Brick', 'https://www.edamam.com/web-img/5f5/5f51c89f832d50da84e3c05bef3f66f9.jpg', uri, 'http://www.marthastewart.com/recipe/grilled-deviled-chickens-under-a-brick', ['4 baby chickens (poussins) or cornish hens (about 1 1/4 pounds each), or 4 chicken breast halves', '3 lemons, plus wedges for garnish', '4 cloves garlic, peeled and smashed', '1 tablespoon crushed red-pepper flakes, or to taste', '1 tablespoon finely chopped fresh thyme', '1 tablespoon finely chopped fresh rosemary', '1/2 cup olive oil', 'Salt, to taste'], ['Low-Carb'])
+
+      assert_equal(actual_recipe, expected_recipe)
+
     end
   end
 
-# PUT THIS IN LATER
-  # test "Will only return the search query using the first word letters from the search_query" do
+  # # not implemented
+  # # query_sanitation should return the recipes matching the first word in the string typed in
+  # test "Can send a search query and get a valid response" do
   #   VCR.use_cassette("hits") do
-  #     search_string = "cilantro, edamame and caramel"
-  #     response = EdamamApiWrapper.search_query(search_string)
-  #     assert_equal response["q"], "cilantro"
+  #     search_string = "cilantro"
+  #     response = EdamamApiWrapper.query_sanitation(search_string)
+  #     assert_equal(response, "cilantro") # because cilantro is the sanitized version of itself
   #   end
   # end
 
-  # test "Will not send a query for searches not starting on a letter character" do
-  #   assert false
-      # assert_nil true # ?
+# dont know what to assert here to ensure it works
+  # test "an argument value for listing will return a successful API request" do
+  #   VCR.use_cassette("hits") do
+  #     clean_string = "cilantro"
+  #     listing = 30
+  #     response = EdamamApiWrapper.list_recipes(clean_string, listing)
+  #     puts "#{response}"
+  #     assert response[200]
+  #   end
   # end
+
 end
