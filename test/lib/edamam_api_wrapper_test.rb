@@ -14,6 +14,14 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
     end
   end
 
+  test "list_recipes returns an empty array if the query has no results back from the API" do
+    VCR.use_cassette("recipes") do
+      query = "automobile"
+      recipes = EdamamApiWrapper.list_recipes(query)
+      assert_equal([], recipes)
+    end
+  end
+
   test "get_recipe should successfully return correct recipe" do
     VCR.use_cassette("recipes") do
       uri = 'http://www.edamam.com/ontologies/edamam.owl#recipe_c468dc28f8b64bb711125cc150b15c25'
@@ -23,6 +31,21 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
 
       assert_equal(actual_recipe, expected_recipe)
 
+    end
+  end
+
+  test "get_recipe should return nil for unexpected uri requests" do
+    VCR.use_cassette("recipes") do
+      uri = 'http://www.edamam.com/ontologies/edamam.owl#recipe_myownuri'
+      unexpected_uri_response = EdamamApiWrapper.get_recipe(uri)
+
+      assert_nil unexpected_uri_response
+
+    end
+  end
+
+  test "get_recipe should return nil if the request to the API was unsuccessful" do
+    VCR.use_cassette("recipes") do
     end
   end
 

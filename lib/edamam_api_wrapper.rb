@@ -7,8 +7,12 @@ class EdamamApiWrapper
 
   attr_reader :data
 
-  def self.list_recipes(clean_string, listing=0)
+  def self.list_recipes(search_string, listing=0)
 
+    clean_string = query_sanitation(search_string)
+    if clean_string.empty?
+      return []
+    end
     #gives us the first ten
     page_string = "&from=0"
     if listing !=0
@@ -35,11 +39,15 @@ class EdamamApiWrapper
     return search_results
   end
 
+# not implemented
 # restrictions on search queries imposed by Edamam @todo
   def self.query_sanitation(search_string)
     puts "Requesting #{search_string} from Edamam database"
     # Need to clean the string up
-    clean_string = search_string
+    if search_string.nil?
+      return ''
+    end
+    clean_string = search_string.gsub(/[^a-zA-Z ]/, '')
     # Used by the recipe controller action
     return clean_string
   end
@@ -47,8 +55,11 @@ class EdamamApiWrapper
   def self.get_recipe(recipe_uri)
     url = BASE_URL + "?r=#{URI.encode(recipe_uri)}" + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
     @data = HTTParty.get(url)
-    # check/test for valid return
-    return Recipe.new(0, @data[0]['label'], @data[0]['image'], @data[0]['uri'], @data[0]['url'], @data[0]['ingredientLines'], @data[0]['dietLabels']  )
+    if @data.empty?
+      return nil
+    else
+      return Recipe.new(0, @data[0]['label'], @data[0]['image'], @data[0]['uri'], @data[0]['url'], @data[0]['ingredientLines'], @data[0]['dietLabels']  )
+    end
   end
 
 end

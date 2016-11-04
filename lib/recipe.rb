@@ -10,19 +10,12 @@ class Recipe
     @url = url
     @ingredients = ingredients
     @diet_info = dietary_info
-    @clean_query = nil
   end
 
   # The RecipesController will send the listing number, but to remember what it means we call it page here and elsewhere
   def self.search_results(search_query, listing=0)
-    # clean up the search string first
-    if search_query != nil
-      @clean_query = search_query.split.first
-      unless @clean_query == nil || @clean_query == "" || @clean_query.gsub!(/[^a-zA-Z]/, '')
-        return EdamamApiWrapper.list_recipes(@clean_query, listing)
-      end
-    end
-    return nil
+    # cleaned up in wrapper
+    return EdamamApiWrapper.list_recipes(search_query, listing)
   end
 
 # returns nil if no search query available or if the id is not in use

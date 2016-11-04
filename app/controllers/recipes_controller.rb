@@ -14,15 +14,17 @@ class RecipesController < ApplicationController
       # SUCCESS
       search_string = recipe_params[:q]
       @recipes = Recipe.search_results(search_string)
-      unless @recipes.empty?
-        if @listing == nil
-          @listing = 0
-        elsif @listing >=0
-          @listing +=10
-        end
-        render :index
-        return
-      end
+      # We have control over Recipe search results (in /lib)
+
+# handle @recipes empty in view.
+        # if @listing == nil
+        #   @listing = 0
+        # elsif @listing >=0
+        #   @listing +=10
+        # end
+      render :index
+      return
+
     # else
     end
     flash[:notice] = "Please enter a valid search term"
@@ -37,7 +39,6 @@ class RecipesController < ApplicationController
 
 private
 
-# undefined method `permit' for "cilantro":String
 def recipe_params
   params.permit(:q)
 end

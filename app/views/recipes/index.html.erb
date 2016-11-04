@@ -1,14 +1,11 @@
 
 <article>
   <% if @recipes != nil %>
-    <% listing_num = @listing + 1 %>
     <% @recipes.each do |recipe| %>
     <section class="row">
     <div class="small-3 columns large-3 columns">
-      <%= "#{listing_num}" %>
       <p><%= link_to(image_tag(recipe.image), image_path(recipe_path(recipe.id)) ) %></p>
       <p><%= link_to "#{recipe.title}", link_selector(recipe) %></p>
-      <% listing_num +=1 %>
     </div>
     </section>
     <% end %>
