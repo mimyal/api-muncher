@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+# Two gems, to use Foundation:
+# Foundation Rails Gem
+gem 'foundation-rails'
+# Required due to an incompatibility between TurboLinks and Foundation.
+gem 'jquery-turbolinks'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.7'
@@ -35,7 +40,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # API GEMS
 gem 'httparty'
 
-gem 'foundation-rails'
 
 
 group :development, :test do
