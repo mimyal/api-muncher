@@ -13,9 +13,9 @@ class Recipe
   end
 
   # The RecipesController will send the listing number, but to remember what it means we call it page here and elsewhere
-  def self.search_results(search_query, listing=0)
+  def self.search_results(search_query, page=1)
     # cleaned up in wrapper
-    return EdamamApiWrapper.list_recipes(search_query, listing)
+    return EdamamApiWrapper.list_recipes(search_query, page)
   end
 
 # returns nil if no search query available or if the id is not in use

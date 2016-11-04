@@ -7,17 +7,17 @@ class EdamamApiWrapper
 
   attr_reader :data
 
-  def self.list_recipes(search_string, listing=0)
-
+  def self.list_recipes(search_string, page=1)
+    # clean up string
     clean_string = query_sanitation(search_string)
     if clean_string.empty?
       return []
     end
     #gives us the first ten
-    page_string = "&from=0"
-    if listing !=0
-      page_string = "&from=#{listing}"
-    end
+
+    listing = (page*10) - 10
+
+    page_string = "&from=#{listing}"
     url = BASE_URL + "?q=#{clean_string}" + page_string + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
     # url = BASE_URL + "?q=chicken" + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
     # puts "list_recipes URL: #{url}"
@@ -26,7 +26,6 @@ class EdamamApiWrapper
     if @data["hits"]
       @data["hits"].each do |hit|
         wrapper = Recipe.new(listing, hit["recipe"]["label"], hit["recipe"]["image"], hit["recipe"]["uri"], hit["recipe"]["url"], hit["recipe"]["ingredientLines"], hit["recipe"]["dietLabels"])
-        listing += 1
         # label is recipe title
         # image is image of recipe item
         # uri is uri for recipe on edamam
@@ -42,7 +41,7 @@ class EdamamApiWrapper
 # not implemented
 # restrictions on search queries imposed by Edamam @todo
   def self.query_sanitation(search_string)
-    puts "Requesting #{search_string} from Edamam database"
+    # puts "Requesting #{search_string} from Edamam database"
     # Need to clean the string up
     if search_string.nil?
       return ''

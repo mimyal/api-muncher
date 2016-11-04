@@ -34,6 +34,15 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
     end
   end
 
+  test "list_recipes page should return the listings from that page" do
+    VCR.use_cassette("recipes") do
+      search_string = "tilapia"
+      page = 2
+      recipes = EdamamApiWrapper.list_recipes(search_string, page)
+      assert_equal('http://www.edamam.com/ontologies/edamam.owl#recipe_55a8fd184bca071fefbbdc01325f88ef', recipes.first.uri)
+    end
+  end
+
   test "get_recipe should return nil for unexpected uri requests" do
     VCR.use_cassette("recipes") do
       uri = 'http://www.edamam.com/ontologies/edamam.owl#recipe_myownuri'
@@ -44,10 +53,12 @@ class EdamamApiWrapperTest < ActiveSupport::TestCase
     end
   end
 
-  test "get_recipe should return nil if the request to the API was unsuccessful" do
-    VCR.use_cassette("recipes") do
-    end
-  end
+  # test "get_recipe should return nil if the request to the API was unsuccessful" do
+  #   VCR.use_cassette("recipes") do
+  #     assert false
+  #   end
+  # end
+
 
   # # not implemented
   # # query_sanitation should return the recipes matching the first word in the string typed in
