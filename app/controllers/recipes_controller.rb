@@ -24,9 +24,9 @@ class RecipesController < ApplicationController
   end
 
   def show
-    show_params = params[:id]
-    @recipe = Recipe.find(show_params)
-    raise
+    show_params = params[:uri]
+    # Will stop some invalid recipes rather than showing an empty list
+      @recipe = EdamamApiWrapper.get_recipe(show_params)
   end
 
 private

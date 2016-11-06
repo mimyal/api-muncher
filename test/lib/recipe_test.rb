@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RecipeTest < ActiveSupport::TestCase
 
-  test "Recipe.search_results should return an array of recipes with a given search_query" do
+  test "Recipe.search_results should return an array of recipes" do
     VCR.use_cassette("hits") do
       clean_string = "cilantro"
       recipes = Recipe.search_results(clean_string)
@@ -24,10 +24,29 @@ class RecipeTest < ActiveSupport::TestCase
     assert_equal([], Recipe.search_results(nil_that_should_be_a_string))
   end
 
-#show
-  # test "find should be able to find the instance recipe with specified id" do
-  #   # params_id = 0
-  #   # assert_instance_of Recipe, Recipe.find(params_id)
+  # test "different_page can be called after self.search_results and should return an array of recipes" do
+  #   VCR.use_cassette("hits") do
+  #     # we already asserted this works
+  #     clean_string = "cilantro"
+  #     working_recipes = Recipe.search_results(clean_string)
+  #
+  #     # test that this works to request the next set of recipes
+  #     next_set_recipes = working_recipes.different_page(1)
+  #     assert_kind_of Array, next_set_recipes
+  #     assert_not next_set_recipes.empty?
+  #     next_set_recipes.each do |recipe|
+  #       assert_kind_of Recipe, recipe
+  #     end
+  #
+  #     # test that this works to request the previous set of recipes
+  #     previous_set_recipes = working_recipes.different_page((-1))
+  #
+  #     assert_kind_of Array, previous_set_recipes
+  #     assert_not previous_set_recipes.empty?
+  #     previous_set_recipes.each do |recipe|
+  #       assert_kind_of Recipe, recipe
+  #     end
+  #   end
   # end
 
   test "two different recipe objects with the same data should be equal" do

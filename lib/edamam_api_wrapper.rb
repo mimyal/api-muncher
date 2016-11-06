@@ -53,7 +53,7 @@ class EdamamApiWrapper
 
   def self.get_recipe(recipe_uri)
     url = BASE_URL + "?r=#{URI.encode(recipe_uri)}" + "&app_id=#{THE_ID}&app_key=#{THE_KEY}"
-    @data = HTTParty.get(url)
+    @data = HTTParty.get(url).parsed_response
     if @data.empty?
       return nil
     else
