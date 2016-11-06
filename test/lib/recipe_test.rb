@@ -24,29 +24,48 @@ class RecipeTest < ActiveSupport::TestCase
     assert_equal([], Recipe.search_results(nil_that_should_be_a_string))
   end
 
-  # test "different_page can be called after self.search_results and should return an array of recipes" do
-  #   VCR.use_cassette("hits") do
-  #     # we already asserted this works
-  #     clean_string = "cilantro"
-  #     working_recipes = Recipe.search_results(clean_string)
-  #
-  #     # test that this works to request the next set of recipes
-  #     next_set_recipes = working_recipes.different_page(1)
-  #     assert_kind_of Array, next_set_recipes
-  #     assert_not next_set_recipes.empty?
-  #     next_set_recipes.each do |recipe|
-  #       assert_kind_of Recipe, recipe
-  #     end
-  #
-  #     # test that this works to request the previous set of recipes
-  #     previous_set_recipes = working_recipes.different_page((-1))
-  #
-  #     assert_kind_of Array, previous_set_recipes
-  #     assert_not previous_set_recipes.empty?
-  #     previous_set_recipes.each do |recipe|
-  #       assert_kind_of Recipe, recipe
-  #     end
-  #   end
+  test "change_page can be called after self.search_results and should return an array of recipes" do
+    VCR.use_cassette("hits") do
+      # we already asserted this works
+      clean_string = "cilantro"
+      recipes = Recipe.search_results(clean_string)
+
+      # test that this works to request the next set of recipes
+      next_set_recipes = Recipe.change_page(1)
+      assert_kind_of Array, next_set_recipes
+      assert_not next_set_recipes.empty?
+      next_set_recipes.each do |recipe|
+        assert_kind_of Recipe, recipe
+      end
+      assert_not_equal(recipes, next_set_recipes)
+
+      # test that this works to request the previous set of recipes (as in, the first 'recipes' in this test)
+      previous_set_recipes = Recipe.change_page((-1))
+
+      assert_kind_of Array, previous_set_recipes
+      # assert_not previous_set_recipes.empty?
+      # previous_set_recipes.each do |recipe|
+        # assert_kind_of Recipe, recipe
+      # end
+      assert_equal(recipes, previous_set_recipes)
+      assert_not_equal(next_set_recipes, previous_set_recipes)
+    end
+  end
+
+  test "change_page should not allow page <1 and instead return current page" do
+    VCR.use_cassette("hits") do
+      # we already asserted this works
+      clean_string = "cilantro"
+      recipes = Recipe.search_results(clean_string)
+
+      invalid_recipe_request = Recipe.change_page((-200))
+      assert_equal(recipes, invalid_recipe_request)
+    end
+  end
+
+# not implemented: will currently return: []
+  # test "change_page should not allow page higher than total number of pages (listings total)%10" do
+  #   assert false
   # end
 
   test "two different recipe objects with the same data should be equal" do
@@ -55,15 +74,5 @@ class RecipeTest < ActiveSupport::TestCase
 
     assert_equal(recipe_a, recipe_b)
   end
-# #search_results returns the information needed for this application only, we can't test this because I am not asking for query information in my API request
-#   test "search_results should return the results for the first word in a query" do
-#     VCR.use_cassette("hits") do
-#       search_query = "cilantro, edamame and caramel"
-#       response = Recipe.search_results(search_query)
-#
-#       assert false
-#       # assert_equal(response["q"], "cilantro")
-#     end
-#   end
 
 end

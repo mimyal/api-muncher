@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  get '/recipes/more' => 'recipes#more'
+
 # Make note that all new /recipes/something routes must go above
   get '/recipes/*uri' => 'recipes#show', as: 'recipe', constraints: {uri: /.+/}
 

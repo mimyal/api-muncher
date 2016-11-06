@@ -19,9 +19,13 @@ class Recipe
     return @recipes = EdamamApiWrapper.list_recipes(search_query, page)
   end
 
-  def different_page(page_direction)
-    # @page += page_direction
-    # return @recipes = EdamamApiWrapper.list_recipes(@search_query, @page)
+  def self.change_page(page_direction)
+    if ((@page + page_direction) < 1)
+      return @recipes
+    else
+      @page += page_direction
+      return @recipes = EdamamApiWrapper.list_recipes(@search_query, @page)
+    end
   end
 
 

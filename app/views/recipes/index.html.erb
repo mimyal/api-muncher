@@ -1,25 +1,30 @@
 
 <article>
   <% if @recipes != nil %>
-    <% listing = 1 %>
     <section class="row">
       <div class="medium-1 columns">
       </div>
     <% @recipes.each do |recipe| %>
       <div class="small-12 medium-3 end columns results">
-        <%= "#{listing}" %>
         <p><%= link_to(image_tag(recipe.image), image_path(recipe_path(recipe.uri)) ) %></p>
         <p><%= link_to "#{recipe.title}", recipe_path(recipe.uri) %></p>
       </div>
-        <% listing +=1 %>
     <% end %>
   </section>
   <% end %>
 </article>
 <article class="">
   <p>
-    Not quite where I want this to go yet:
-    <%= link_to "Next", search_path(@recipes) %>
+    <% page_number = params[:page].to_i %>
+    <% if page_number > 1 %>
+      <%= link_to "First Page", search_path(q: "cilantro") %>
+        <% if page_number > 2 %>
+          <%= link_to "<<", recipes_more_path({page_direction: "-2"}) %>
+        <% end %>
+      <%= link_to "<", recipes_more_path({page_direction: "-1"}) %>
+    <% end %>
+    <%= link_to ">", recipes_more_path({page_direction: "1"}) %>
+    <%= link_to ">>", recipes_more_path({page_direction: "2"}) %>
   </p>
 </article>
 <!-- <p>
