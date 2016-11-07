@@ -19,10 +19,11 @@ class RecipesControllerTest < ActionController::TestCase
     end
   end
 
-  test "search should render the correct page" do
+  test "search should render the index with different page numbers" do
     VCR.use_cassette("recipes") do
       params = {"q" => "tilapia", "page" => 2}
       get :search, params
+      
       assert_response 200
       assert :index
     end
@@ -40,7 +41,7 @@ class RecipesControllerTest < ActionController::TestCase
 
   test "more should render index with a new page number" do
     VCR.use_cassette("recipes") do
-      params = {"q" => "cilantro"}
+      params = {"q" => "cilantro", "page" => "1"}
       get :search, params
 
       #more (one page forward)

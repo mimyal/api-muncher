@@ -1,21 +1,26 @@
-  <% if flash[:notice] %>
-   <div class="notice">
-     <%= flash[:notice] %>
-     <% flash[:notice] = nil %>
-   </div>
-   <% else %>
-   <h1>Welcome to the Muncher!</h1>
- <% end %>
-<section class="row">
-<div class="small-8 columns medium-4 columns">    
-  <%= form_tag(search_path, method: "get") do %>
-    <%= label_tag(:q, "Search for:") %>
-    <%= text_field_tag(:q) %>
-    <%= submit_tag("Go!") %>
-  <% end %>
-</div>
-</section>
+<main class="row">
+  <article class="small-12 columns">
+    <% if flash[:notice] %>
+    <div class="notice">
+      <%= flash[:notice] %>
+      <% flash[:notice] = nil %>
+    </div>
+    <% else %>
+    <h1>Welcome to the Muncher!</h1>
+    <% end %>
+    <section class="small-12 columns">
+      <div class="small-8 columns medium-4 columns">
+        <%= form_tag(search_path, method: "get") do %>
+        <%= label_tag(:q, "Search for:") %>
+        <%= text_field_tag(:q) %>
+        <%= hidden_field_tag(:page, 1) %>
+        <%= submit_tag("Go!") %>
+        <% end %>
+      </div>
+    </section>
+  </article>
+</main>
 
-<p>
-  This is the home#index page
-</p>
+<!-- <p>
+This is the home#index page
+</p> -->

@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
 
-  def index; end
+  def index
+    @page = params[:page]
+  end
 
 end

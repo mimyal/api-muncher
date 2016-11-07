@@ -1,32 +1,26 @@
-
-<article>
-  <% if @recipes != nil %>
+<main class=row>
+  <article class="small-12 large-10 columns">
+    <% if @recipes != nil %>
     <section class="row">
-      <div class="medium-1 columns">
-      </div>
-    <% @recipes.each do |recipe| %>
-      <div class="small-12 medium-3 end columns results">
-        <p><%= link_to(image_tag(recipe.image), image_path(recipe_path(recipe.uri)) ) %></p>
-        <p><%= link_to "#{recipe.title}", recipe_path(recipe.uri) %></p>
-      </div>
-    <% end %>
-  </section>
-  <% end %>
-</article>
-<article class="">
-  <p>
-    <% page_number = params[:page].to_i %>
-    <% if page_number > 1 %>
-      <%= link_to "First Page", search_path(q: "cilantro") %>
-        <% if page_number > 2 %>
-          <%= link_to "<<", recipes_more_path({page_direction: "-2"}) %>
+      <% @recipes.in_groups_of(3) do |line| %>
+      <% line.each do |recipe| %>
+      <div class="large-3 medium-4 small-12 columns end">
+        <% if !recipe.nil? %>
+        <p><%= link_to(image_tag(recipe.image), image_path(recipe_path(recipe.uri)), target: '_blank') %></p>
+        <p class="txt-box"><%= link_to "#{recipe.title}", recipe_path(recipe.uri), target: '_blank' %></p>
         <% end %>
-      <%= link_to "<", recipes_more_path({page_direction: "-1"}) %>
+      </div>
+      <% end %>
+      <% end %>
+    </section>
     <% end %>
-    <%= link_to ">", recipes_more_path({page_direction: "1"}) %>
-    <%= link_to ">>", recipes_more_path({page_direction: "2"}) %>
-  </p>
-</article>
+  </article>
+  <article class="small-12 large-10 columns">
+
+        <%= render partial: "page_buttons", locals: { q: @query, page: @page } %>
+
+  </article>
+</main>
 <!-- <p>
-  This is the recipes#search page
+This is the recipes#search page
 </p> -->

@@ -1,0 +1,33 @@
+<article class="row">
+
+  <section class="small-12 columns">
+
+    <% page_number = params[:page].to_i %>
+    <% if page_number > 1 %>
+    <div class="row">
+      <span class="small-5 large-4 columns"></span>
+      <span class="small-2 large-4 columns">
+        <!-- First page button -->
+        <%= button_to "First Page", search_path(@query), method: :get, params: {q: @query, page: "1"}, class: "hollow button" %>
+      </span>
+      <span class="small-5 large-4 columns"></span>
+    </div>
+    <p class="small-12 columns"></p>
+
+    <div class="small-12 columns">
+      <span class="small-5 large-5 columns"></span>
+
+      <span class="small-1 medium-1 large-1 columns end">
+        <!-- Single back button -->
+        <%= button_to "<", more_recipes_path(button_params("-1")), method: :get, params: button_params("-1"), class: "hollow button" %>
+      </span>
+      <% end %>
+      <span class="small-1 medium-1 large-1 columns end">
+        <!-- Single forward button  -->
+        <%= button_to ">", more_recipes_path(button_params("1")), method: :get, params: button_params("1"), class: "hollow button" %>
+      </span>
+      <span class="small-5 large-5 columns"></span>
+      <p class="small-12 columns"></p>
+    </div>
+  </section>
+</article>

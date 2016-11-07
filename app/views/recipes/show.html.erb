@@ -1,26 +1,30 @@
-<article class="">
-  <div class="">
-  <h1><%= link_to "#{@recipe.title}", @recipe.url %></h1>
+<main class=row>
+  <div class="medium-12 columns">
+
+    <h2 class="medium-12 columns"><%= link_to "#{@recipe.title}", @recipe.url %></h2>
+    <div class="row">
+
+        <p class="small-6 columns"><%= link_to(image_tag(@recipe.image), image_path(recipe_path(@recipe.uri)) ) %></p>
+        <section class="small-6 columns">
+        <h3>Dietary Information:</h3>
+        <p>
+          <% @recipe.diet_info.each do |info| %>
+          <%= info %>
+          <% end %>
+        </p>
+      </div>
+    </section>
   </div>
-  <section>
-    <p><%= link_to(image_tag(@recipe.image), image_path(recipe_path(@recipe.uri)) ) %></p>
-    <div class="">
+  <article class="">
+    <section class="medium-6 columns">
       <h3>Ingredients Needed:</h3>
       <% @recipe.ingredients.each do |ingred| %>
       <p><%= ingred %></p>
       <% end %>
-    </div>
-  </section>
-  <section>
-    <h3>Dietary Information:</h3>
-    <p>
-      <% @recipe.diet_info.each do |info| %>
-        <%= info %>
-      <% end %>
-    </p>
-  </section>
-</article>
+    </section>
+  </article>
+</main>
 
-<p>
-  This is the recipe#show page
-</p>
+<!-- <p>
+This is the recipe#show page
+</p> -->
